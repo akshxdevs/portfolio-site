@@ -1,9 +1,64 @@
 @import "tailwindcss";
-
 :root {
   --background: #ffffff;
   --foreground: #171717;
 }
+
+[data-theme="dark"] {
+  --background: #050505;
+  --foreground: #ededed;
+}
+
+@keyframes glow {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.animate-glow {
+  animation: glow 10s linear infinite;
+}
+
+@keyframes scroll {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.scroller {
+  overflow: hidden;
+  white-space: nowrap;
+  position: relative;
+}
+
+.scroller__inner {
+  display: flex;
+  width: max-content;
+  min-width: 100%;
+  flex-wrap: nowrap;
+  animation: scroll var(--animation-duration, 20s) linear infinite;
+}
+
+.scroller[data-direction="right"] .scroller__inner {
+  animation-direction: reverse;
+}
+
+/* Slow and fast speed */
+.scroller[data-speed="slow"] {
+  --animation-duration: 40s;
+}
+.scroller[data-speed="fast"] {
+  --animation-duration: 10s;
+}
+
+/* 🛑 Pause animation on hover */
+.scroller:hover .scroller__inner {
+  animation-play-state: paused;
+}
+
 
 @theme inline {
   --color-background: var(--background);
@@ -14,7 +69,9 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
+    --background:linear-gradient(135deg, #050505, #1A0B40);
+
+    ;
     --foreground: #ededed;
   }
 }
