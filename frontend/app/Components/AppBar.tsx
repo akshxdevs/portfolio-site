@@ -2,38 +2,26 @@
 
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { useRecoilState } from "recoil";
+import { themeToggleState } from "../recoil/atom";
 
 export const AppBar = () => {
     const router = useRouter();
-    const [theme, setTheme] = useState("light"); // Default theme
-
-    // Load theme from localStorage on mount
-    useEffect(() => {
-        if (typeof window !== "undefined") {
-            const savedTheme = localStorage.getItem("theme") || "light";
-            setTheme(savedTheme);
-            document.documentElement.setAttribute("data-theme", savedTheme);
-            console.log("Initial theme loaded:", savedTheme);
-        }
-    }, []);
+    const [theme, setTheme] = useRecoilState(themeToggleState)
 
     const toggleTheme = () => {
-        const newTheme = theme === "dark" ? "light" : "dark";
-        setTheme(newTheme);
-        document.documentElement.setAttribute("data-theme", newTheme);
-        localStorage.setItem("theme", newTheme);
-        console.log("Theme switched to:", newTheme);
+        setTheme((prevTheme) => (prevTheme === "dark" ? "light" : "dark"));
     };
 
     return (
         <div className="flex justify-center items-center">
             <div className="flex justify-between p-10 pb-5 items-center w-[900px] font-semibold text-lg">
-                <h1>akshxdevs</h1>
+                <button className="text-3xl" onClick={()=>router.push("/about")}>akshxdevs</button>
                 <div className="flex gap-5">
                     <button onClick={() => router.push("/blogs")}>blogs</button>
                     <button onClick={() => router.push("/projects")}>projects</button>
                     <button onClick={toggleTheme} className="outline-none">
-                        {theme === "light" ? 
+                        {theme === "dark" ? 
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="size-5">
                                 <path strokeLinecap="round" strokeLinejoin="round" d="M12 3v2.25m6.364.386-1.591 1.591M21 12h-2.25m-.386 6.364-1.591-1.591M12 18.75V21m-4.773-4.227-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0Z" />
                             </svg> 

@@ -1,14 +1,32 @@
 "use client";
 import { useRouter } from "next/navigation";
+import { useEffect, useRef, useState } from "react";
 import { AppBar } from "../Components/AppBar";
-import { TechStackSlider } from "../Components/TechStackSlider";
 import { SocialBar } from "../Components/SocialBar";
+import { TechStackSlider } from "../Components/TechStackSlider";
+import "../globals.css";
+import { useRecoilValue } from "recoil";
+import { themeToggleState } from "../recoil/atom";
 export default function(){
+    const [showContactModel,setShowContactModel] = useState(false);
+    const theme = useRecoilValue(themeToggleState);
+    const modelRef = useRef<HTMLDivElement>(null);
     const router = useRouter();
-    return <div className="">
+
+    useEffect(()=>{
+        const handleOutsideClick = (e:MouseEvent) => {
+            if (modelRef.current && !modelRef.current.contains(e.target as Node)) {
+                setShowContactModel(false)
+            }
+        };
+        window.addEventListener("mousedown",handleOutsideClick);
+        return () => window.removeEventListener("mousedown",handleOutsideClick);
+    },[])
+
+    return <div className={theme == "dark" ? "bg-black text-white" : "bg-white text-black"}>
         <AppBar/>
         <div className="flex flex-col items-center">
-            <div className="flex justify-between px-10 items-center w-[900px] border border-gray-900 rounded-lg">
+            <div ref={modelRef} className="flex justify-between px-10 items-center w-[900px] border border-gray-900 rounded-lg">
                 <div className="w-[510px]">
                     <h1 className="py-2 font-bold text-xl">engineer.</h1>
                     <p>Hey, I’m Akash!</p>
@@ -36,9 +54,15 @@ export default function(){
                             </button>
                         </div>
                         <div>
-                            <button className="" onClick={()=>router.push("https://x.com/akshxdevs")}>
-                                <img src="./twitter (2).svg" alt="" className="w-6 h-6 hover:text-green-600 "/>
-                            </button>
+                            {theme == "dark" ? (
+                                <button className="" onClick={()=>router.push("https://x.com/akshxdevs")}>
+                                    <img src="./twitter (2).svg" alt="" className="w-6 h-6 hover:text-green-600 "/>
+                                </button>
+                            ) :(
+                                <button>
+                                    <img width="23" height="23" src="https://img.icons8.com/ios/50/twitterx--v1.png" alt="twitterx--v1"/>
+                                </button>
+                            )}
                         </div>
                     </div>
                 </div>
@@ -46,23 +70,58 @@ export default function(){
             <div>
                 <TechStackSlider/>
             </div>
-            <div className="w-[900px] p-10 mb-10 border border-gray-700 rounded-xl">
+            <div className="w-[700px] px-10 pt-5 pb-2 mb-8 border border-gray-700 rounded-xl">
                 <h1 className="text-slate-300">Code, coffee, and chaos—DMs open for all things Web3 & beyond! ☕⚡</h1>
                 <div className="flex gap-5">
                     <div>
-                        <button className="p-3 my-5 border border-gray-700 text-slate-300">Contact me</button>
+                        <button className="p-3 my-5 border border-gray-700 text-slate-300" onClick={()=>{
+                            setShowContactModel(true);
+                        }}>Contact me</button>
                     </div>
                     <div>
                         <button className="p-3 my-5 border border-gray-700 text-slate-300">Buy me! ☕</button>
                     </div>
                 </div>
             </div>
-            <div className="w-[950px] px-10 pb-10 mb-5">
-                <p className="text-slate-400 text-sm">Engineered & fueled by @akshxdevs — where innovation meets execution.🛠️</p>
+            <div className="w-[700px] py-2 font-semibold text-sm text-center">
+                If you’re into Web3, tech, or just wanna debate the best coffee for late-night coding, hit me up on Twitter                     <a 
+                        href="https://x.com/akshxdevs" 
+                        target="_blank" 
+                        rel="noopener noreferrer"
+                        className="text-blue-500 hover:underline"
+                    >
+                        @akshxdevs
+                    </a> —let’s geek out! 🌐🔥
+            </div>
+            <div className="w-[700px] px-10 pb-10 mb-5 text-center text-slate-400 text-sm">
+                    Engineered & fueled by @akshxdevs — where innovation meets execution. 🛠️
             </div>
             <div>
                 <SocialBar/>
             </div>
         </div>
+        {showContactModel && (
+            <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center h-screen">
+                <div className="bg-white rounded-lg shadow-lg py-10 px-10 max-w-lg w-full">
+                    <div className="flex flex-col justify-center items-center w-full">
+                        <h1 className="text-black font-bold text-xl text-center">Slide Into My Inbox 📬✨</h1>
+                        <form action="https://getform.io/f/bdrnmkxb" method="POST" className="w-full flex flex-col gap-3">
+                            <input type="text" name="name" required
+                                className="w-full px-4 py-3 text-black bg-slate-50 border border-gray-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent placeholder-gray-400 shadow-md transition-all duration-300"
+                                placeholder="What do they call you? 🤔"/>
+                            <input type="email" name="email" required
+                                className="w-full px-4 py-3 text-black bg-slate-50 border border-gray-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent placeholder-gray-400 shadow-md transition-all duration-300"
+                                placeholder="Your inbox HQ 📩"/>
+                            <textarea name="message" required placeholder="Drop a message, let’s connect!"
+                                className="w-full px-4 py-3 h-32 text-black bg-slate-50 border border-gray-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent placeholder-gray-400 shadow-md transition-all duration-300 resize-none"/>
+                                <button type="submit"  
+                                    className="w-full px-6 py-3 bg-gradient-to-r from-indigo-500 to-blue-600 text-white font-medium rounded-lg shadow-lg hover:from-indigo-600 hover:to-blue-700 transition-all duration-300 hover:shadow-xl hover:-translate-y-1 active:scale-95">
+                                    Send Message ✉️
+                                </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        )}
     </div>
 }

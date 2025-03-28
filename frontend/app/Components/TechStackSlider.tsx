@@ -50,12 +50,12 @@ const InfiniteScroll = () => {
     if (!scroller) return;
 
     const duplicatedContent = scroller.innerHTML;
-    scroller.innerHTML += duplicatedContent; // Duplicate items for seamless looping
+    scroller.innerHTML += duplicatedContent;
 
     let animation = scroller.animate(
       [{ transform: "translateX(0)" }, { transform: "translateX(-50%)" }],
       {
-        duration: 20000, // Speed of scrolling (adjustable)
+        duration: 20000, 
         iterations: Infinity,
         easing: "linear",
       }
