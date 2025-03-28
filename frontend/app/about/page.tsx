@@ -9,6 +9,7 @@ import { useRecoilValue } from "recoil";
 import { themeToggleState } from "../recoil/atom";
 export default function(){
     const [showContactModel,setShowContactModel] = useState(false);
+    const [showBuyMeCoffeModel,setShowBuyMeCoffeModel] = useState(false);
     const theme = useRecoilValue(themeToggleState);
     const modelRef = useRef<HTMLDivElement>(null);
     const router = useRouter();
@@ -17,6 +18,7 @@ export default function(){
         const handleOutsideClick = (e:MouseEvent) => {
             if (modelRef.current && !modelRef.current.contains(e.target as Node)) {
                 setShowContactModel(false)
+                setShowBuyMeCoffeModel(false);
             }
         };
         window.addEventListener("mousedown",handleOutsideClick);
@@ -26,7 +28,7 @@ export default function(){
     return <div className={theme == "dark" ? "bg-black text-white" : "bg-white text-black"}>
         <AppBar/>
         <div className="flex flex-col items-center">
-            <div ref={modelRef} className="flex justify-between px-10 items-center w-[900px] border border-gray-900 rounded-lg">
+            <div className="flex justify-between px-10 items-center w-[900px] border border-gray-900 rounded-lg">
                 <div className="w-[510px]">
                     <h1 className="py-2 font-bold text-xl">engineer.</h1>
                     <p>Hey, I’m Akash!</p>
@@ -79,7 +81,9 @@ export default function(){
                         }}>Contact me</button>
                     </div>
                     <div>
-                        <button className="p-3 my-5 border border-gray-700 text-slate-300">Buy me! ☕</button>
+                        <button className="p-3 my-5 border border-gray-700 text-slate-300" onClick={()=>{
+                            setShowBuyMeCoffeModel(true);
+                        }}>Buy me! ☕</button>
                     </div>
                 </div>
             </div>
@@ -102,7 +106,7 @@ export default function(){
         </div>
         {showContactModel && (
             <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center h-screen">
-                <div className="bg-white rounded-lg shadow-lg py-10 px-10 max-w-lg w-full">
+                <div ref={modelRef} className="bg-white rounded-lg shadow-lg py-10 px-10 max-w-lg w-full">
                     <div className="flex flex-col justify-center items-center w-full">
                         <h1 className="text-black font-bold text-xl text-center">Slide Into My Inbox 📬✨</h1>
                         <form action="https://getform.io/f/bdrnmkxb" method="POST" className="w-full flex flex-col gap-3">
@@ -119,6 +123,18 @@ export default function(){
                                     Send Message ✉️
                                 </button>
                         </form>
+                    </div>
+                </div>
+            </div>
+        )}
+        {showBuyMeCoffeModel && (
+            <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center h-screen">
+                <div ref={modelRef} className="bg-white rounded-lg shadow-lg py-10 px-5 max-w-lg w-full">
+                    <div className="flex flex-col justify-center items-center w-full">
+                        <h1 className="text-black font-bold text-xl text-center">Support my work & keep the ideas brewing! ☕✨</h1>
+                        <div className="pt-5">
+                            <img src="/WhatsApp Image 2025-03-28 at 12.18.37.jpeg" alt="QR-Code" className="w-80 h-80"/>
+                        </div>
                     </div>
                 </div>
             </div>

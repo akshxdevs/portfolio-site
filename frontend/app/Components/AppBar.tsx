@@ -1,7 +1,6 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
 import { themeToggleState } from "../recoil/atom";
 
@@ -16,7 +15,7 @@ export const AppBar = () => {
     return (
         <div className="flex justify-center items-center">
             <div className="flex justify-between p-10 pb-5 items-center w-[900px] font-semibold text-lg">
-                <button className="text-3xl" onClick={()=>router.push("/about")}>akshxdevs</button>
+                <button className="text-3xl outline-none border-none" onClick={()=>router.push("/about")}>akshxdevs</button>
                 <div className="flex gap-5">
                     <button onClick={() => router.push("/blogs")}>blogs</button>
                     <button onClick={() => router.push("/projects")}>projects</button>
